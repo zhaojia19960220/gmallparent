@@ -12,7 +12,7 @@ import java.util.List;
 @Api(tags = "商品基础属性接口")
 @RestController
 @RequestMapping("admin/product")
-@CrossOrigin
+//@CrossOrigin   //网关已经添加跨域配置类，不需要加注解了
 public class BaseManageController {
 
     @Autowired
