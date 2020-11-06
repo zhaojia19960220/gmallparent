@@ -29,7 +29,7 @@ public class FileUploadController {
     @RequestMapping("fileUpload")
     public Result<String> fileUpload(MultipartFile file) throws Exception{
         //获取到上传文件的路径
-        //先读取到配置文件tracker.conf
+        //先读取到配置文件tracker.conf tracker-server 的ip地址
         String configFile = this.getClass().getResource("/tracker.conf").getFile();
         String path = null;
 

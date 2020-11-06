@@ -42,6 +42,7 @@ public class SpuInfo extends BaseEntity {
 	@TableField(exist = false)
 	private List<SpuSaleAttr> spuSaleAttrList;
 
+	// spu图片集合
 	@TableField(exist = false)
 	private List<SpuImage> spuImageList;
 

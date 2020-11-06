@@ -10,6 +10,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Api(tags = "后台品牌管理数据接口")
 @RestController
 @RequestMapping("/admin/product/baseTrademark")
@@ -57,5 +59,13 @@ public class BaseTrademarkController {
     public Result get(@PathVariable String id) {
         BaseTrademark baseTrademark = baseTrademarkService.getById(id);
         return Result.ok(baseTrademark);
+    }
+
+    //查询全部品牌(品牌回显)
+    //http://api.gmall.com/admin/product/baseTrademark/getTrademarkList
+    @GetMapping("getTrademarkList")
+    public Result getTrademarkList(){
+        List<BaseTrademark> trademarkList = baseTrademarkService.list(null);
+        return Result.ok(trademarkList);
     }
 }
