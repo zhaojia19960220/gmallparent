@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.util.List;
 
@@ -58,6 +59,9 @@ public class ManageServiceImpl implements ManageService {
 
     @Autowired
     private  SkuAttrValueMapper skuAttrValueMapper;
+
+    @Autowired
+    private BaseCategoryViewMapper baseCategoryViewMapper;
 
     //查询所有的一级分类信息
     @Override
@@ -291,5 +295,40 @@ public class ManageServiceImpl implements ManageService {
         skuInfo.setId(skuId);
         skuInfo.setIsSale(0);
         skuInfoMapper.updateById(skuInfo);
+    }
+
+    //根据skuId 查询skuInfo
+    @Override
+    public SkuInfo getSkuInfo(Long skuId) {
+        SkuInfo skuInfo = skuInfoMapper.selectById(skuId);
+        //根据skuId查询图片列表集合
+        QueryWrapper<SkuImage> wrapper = new QueryWrapper<>();
+        wrapper.eq("sku_id",skuId);
+        List<SkuImage> skuImageList = skuImageMapper.selectList(wrapper);
+        //将图片列表集合放入skuInfo中的skuImageList
+        skuInfo.setSkuImageList(skuImageList);
+        return skuInfo;
+    }
+
+    //通过三级分类id查询分类信息
+    @Override
+    public BaseCategoryView getCategoryViewByCategory3Id(Long category3Id) {
+        return baseCategoryViewMapper.selectById(category3Id);
+    }
+
+    //获取sku最新价格
+    @Override
+    public BigDecimal getSkuPrice(Long skuId) {
+        SkuInfo skuInfo = skuInfoMapper.selectById(skuId);
+        if(null != skuInfo) {
+            return skuInfo.getPrice();
+        }
+        return new BigDecimal("0");
+    }
+
+    //根据spuId，skuId 查询销售属性集合(获取销售属性+销售属性值+锁定！)
+    @Override
+    public List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(Long skuId, Long spuId) {
+        return spuSaleAttrMapper.selectSpuSaleAttrListCheckBySku(skuId,spuId);
     }
 }
